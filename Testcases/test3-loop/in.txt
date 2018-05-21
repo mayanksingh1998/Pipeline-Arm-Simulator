@@ -1,0 +1,16 @@
+fact:sub R13,R13,#8
+STR R14,[R13,#4]
+STR r0,[R13,#0]
+CMP r0,#1
+BGE L1
+MOV r0,#1
+ADD R13,R13,#8
+MOV R15,R14
+L1:SUB r0,r0,#1
+BL fact
+MOV r12,r0
+LDR r0,[R13,#0]
+LDR R14,[R13,#4]
+ADD R13,R13,#8
+MUL r0,r0,r12
+MOV R15,R14

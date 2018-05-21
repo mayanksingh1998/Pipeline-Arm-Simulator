@@ -1,0 +1,9 @@
+ldr r4,[r3,#54]
+ADD r7,r4,#32
+mov r1,#4
+Loop:SUB r1,r1,#1
+cmp r1,#0
+bge Loop
+sub r11,r12,#4
+b Exit
+Exit:ADD r4,r5,r9

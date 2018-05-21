@@ -1,0 +1,1 @@
+This test case was build to check the data hazard solved by forwarding.This hazard occurs when instruction which is performing needs an input which is still in process of previous instruction so in that case we just forward its value from the EX/MEM pipeline register to the ID/EX pipeline register.

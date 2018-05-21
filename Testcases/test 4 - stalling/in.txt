@@ -1,0 +1,6 @@
+add r4,r5,r6
+cmp r1,r2
+beq L
+sub r1,r6,r7
+mul r1,r2,r3
+L:add r1,r6,r7

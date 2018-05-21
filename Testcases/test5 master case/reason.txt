@@ -1,0 +1,1 @@
+This test case is to check all the functionality of ARM architecture instruction set. This test case covers all type instructions and all types of hazards. 

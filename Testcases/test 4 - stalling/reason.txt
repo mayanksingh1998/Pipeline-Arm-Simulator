@@ -1,0 +1,1 @@
+This test case is to check the Control Hazard. This hazard occurs because of branching instruction.We are preventing this hazard by performing  the CMP instruction in stage 2 only.

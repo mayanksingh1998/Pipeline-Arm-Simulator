@@ -1,0 +1,13 @@
+ldr = 30;
+ldr_pseudo = 4;
+str = 30;
+str_pseudo = 2;
+add = 2;
+sub = 2;
+cmp = 5;
+mul = 2;
+bne = 1;
+bge = 5;
+b = 4;
+bl = 4;
+mov = 2;

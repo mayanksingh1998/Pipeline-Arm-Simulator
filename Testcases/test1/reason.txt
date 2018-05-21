@@ -1,0 +1,1 @@
+This test case just contains simple ARM architecture instruction set which can be performed without any hazard and can be performed smoothly.It just checks the basic functionality of the program.

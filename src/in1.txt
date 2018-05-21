@@ -1,0 +1,755 @@
+fact:sub R13,R13,#8
+STR R14,[R13,#4]
+STR r0,[R13,#0]
+CMP r0,#1
+BGE L1
+MOV r0,#1
+ADD R13,R13,#8
+MOV R15,R14
+L1:SUB r0,r0,#1
+BL fact
+MOV r12,r0
+LDR r0,[R13,#0]
+LDR R14,[R13,#4]
+ADD R13,R13,#8
+MUL r0,r0,r12
+MOV R15,R14
+for (int i = 0; i < st2.size(); i++)
+   {  int inst;
+   inst = (st2[i]-st2[i]%1000000)/1000000; 
+  // cout<<st2[i]<<endl;
+   int s2=(st2[i] % 100);
+
+   int s1=((st2[i]%10000-s2)/100);
+   
+   
+   int des=((st2[i]%1000000-(st2[i]%10000))/10000)-1;
+   string so1 = to_string(s1);
+   
+   string des1 = to_string(des);
+   // const char *dest = des1.c_str();
+   // const char *source1 = so1.c_str();
+   // const char *source2 = so2.c_str();
+   string result;
+   if(inst ==0){
+    v2.push_back("NOP");
+   }
+     if(inst==1){
+     // cout<<"ef";
+      if(s2<16){
+        s2=s2-1;
+        string so2 = to_string(s2);
+      result= "Add  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v2.push_back(final);
+    }
+  if(inst==2){
+    
+      if(s2<=16){
+          s2=s2-1;
+        string so2 = to_string(s2);
+      
+      result= "SUB  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "SUB R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v2.push_back(final);
+    }
+  if(inst==3){
+     
+      if(s2<16){
+          s2=s2-1;
+        string so2 = to_string(s2);
+      
+      result= "MUL  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "MUL  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v2.push_back(final);
+    }
+  if(inst==4){
+       s2=s2-16;
+        string so2 = to_string(s2);
+      //if(s2<16){
+      result= "STR  R"+ des1 +" [R"+ so1 +" #"+ so2 + "].";
+     //}//const char *final = result.c_str();
+     // else {result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v2.push_back(final);
+    }
+  if(inst==5){
+       s2=s2-16;
+        string so2 = to_string(s2);
+      result= "LDR  R"+ des1 +" [R"+ so1 +" #"+ so2 + "].";
+     //}//const char *final = result.c_str();
+     // else {result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v2.push_back(final);
+    }
+  if(inst==6){
+     if(s1<16){
+      
+      s1=s1-1;
+        string so1 = to_string(s1);
+      result= "CMP  R"+ des1 +" R"+ so1 + ".";
+     }//const char *final = result.c_str();
+      else {
+        s1=s1-16;
+        string so1 = to_string(s1);
+        result= "CMP R"+ des1 +" #"+ so1  + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v2.push_back(final);
+    }
+  if(inst==7){
+    if(s1<16){
+     s1=s1-1;
+        string so1 = to_string(s1);
+      result= "MOV  R"+ des1 +" R"+ so1 + ".";
+     }//const char *final = result.c_str();
+      else {
+         s1=s1-16;
+        string so1 = to_string(s1);
+        result= "MOV R"+ des1 +" #"+ so1  + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v2.push_back(final);
+    }
+  if(inst==8){
+    int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BNE "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v2.push_back(final);
+    }
+  if(inst==9){
+  int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BGE "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v2.push_back(final);//v1.push_back("BGE");
+    }
+  if(inst==10){
+    int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BL "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v2.push_back(final);
+      //v1.push_back("BL");
+    }
+  if(inst==11){
+      int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "B "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v2.push_back(final);
+      //v1.push_back("B");
+    }
+  if(inst==12){
+      v2.push_back("LDR_pseudo");
+    }
+
+}
+
+
+for (int i = 0; i < st3.size(); i++)
+   {  int inst;
+   inst = (st3[i]-st3[i]%1000000)/1000000; 
+ //  cout<<st3[i]<<endl;
+   int s2=(st3[i] % 100);
+
+   int s1=((st3[i]%10000-s2)/100);
+   
+   
+   int des=((st3[i]%1000000-(st3[i]%10000))/10000)-1;
+   string so1 = to_string(s1);
+   
+   string des1 = to_string(des);
+   // const char *dest = des1.c_str();
+   // const char *source1 = so1.c_str();
+   // const char *source2 = so2.c_str();
+   string result;
+   if(inst ==0){
+    v3.push_back("NOP");
+   }
+     if(inst==1){
+     // cout<<"ef";
+      if(s2<16){
+        s2=s2-1;
+        string so2 = to_string(s2);
+      result= "Add  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v3.push_back(final);
+    }
+  if(inst==2){
+    
+      if(s2<=16){
+          s2=s2-1;
+        string so2 = to_string(s2);
+      
+      result= "SUB  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "SUB R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v3.push_back(final);
+    }
+  if(inst==3){
+     
+      if(s2<16){
+          s2=s2-1;
+        string so2 = to_string(s2);
+      
+      result= "MUL  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "MUL  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v3.push_back(final);
+    }
+  if(inst==4){
+       s2=s2-16;
+        string so2 = to_string(s2);
+      //if(s2<16){
+      result= "STR  R"+ des1 +" [R"+ so1 +" #"+ so2 + "].";
+     //}//const char *final = result.c_str();
+     // else {result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v3.push_back(final);
+    }
+  if(inst==5){
+       s2=s2-16;
+        string so2 = to_string(s2);
+      result= "LDR  R"+ des1 +" [R"+ so1 +" #"+ so2 + "].";
+     //}//const char *final = result.c_str();
+     // else {result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v3.push_back(final);
+    }
+  if(inst==6){
+     if(s1<16){
+      
+      s1=s1-1;
+        string so1 = to_string(s1);
+      result= "CMP  R"+ des1 +" R"+ so1 + ".";
+     }//const char *final = result.c_str();
+      else {
+        s1=s1-16;
+        string so1 = to_string(s1);
+        result= "CMP R"+ des1 +" #"+ so1  + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v3.push_back(final);
+    }
+  if(inst==7){
+    if(s1<16){
+     s1=s1-1;
+        string so1 = to_string(s1);
+      result= "MOV  R"+ des1 +" R"+ so1 + ".";
+     }//const char *final = result.c_str();
+      else {
+         s1=s1-16;
+        string so1 = to_string(s1);
+        result= "MOV R"+ des1 +" #"+ so1  + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v3.push_back(final);
+    }
+  if(inst==8){
+    int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BNE "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v3.push_back(final);
+    }
+  if(inst==9){
+  int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BGE "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v3.push_back(final);//v1.push_back("BGE");
+    }
+  if(inst==10){
+    int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BL "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v3.push_back(final);
+      //v1.push_back("BL");
+    }
+  if(inst==11){
+      int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "B "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v3.push_back(final);
+      //v1.push_back("B");
+    }
+  if(inst==12){
+      v3.push_back("LDR_pseudo");
+    }
+
+}
+
+for (int i = 0; i < st4.size(); i++)
+   {  int inst;
+   inst = (st4[i]-st4[i]%1000000)/1000000; 
+   //cout<<st4[i]<<endl;
+   int s2=(st4[i] % 100);
+
+   int s1=((st4[i]%10000-s2)/100);
+   
+   
+   int des=((st4[i]%1000000-(st4[i]%10000))/10000)-1;
+   string so1 = to_string(s1);
+   
+   string des1 = to_string(des);
+   // const char *dest = des1.c_str();
+   // const char *source1 = so1.c_str();
+   // const char *source2 = so2.c_str();
+   string result;
+   if(inst ==0){
+    v4.push_back("NOP");
+   }
+     if(inst==1){
+      //cout<<"ef";
+      if(s2<16){
+        s2=s2-1;
+        string so2 = to_string(s2);
+      result= "Add  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v4.push_back(final);
+    }
+  if(inst==2){
+    
+      if(s2<=16){
+          s2=s2-1;
+        string so2 = to_string(s2);
+      
+      result= "SUB  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "SUB R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v4.push_back(final);
+    }
+  if(inst==3){
+     
+      if(s2<16){
+          s2=s2-1;
+        string so2 = to_string(s2);
+      
+      result= "MUL  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "MUL  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v4.push_back(final);
+    }
+  if(inst==4){
+       s2=s2-16;
+        string so2 = to_string(s2);
+      //if(s2<16){
+      result= "STR  R"+ des1 +" [R"+ so1 +" #"+ so2 + "].";
+     //}//const char *final = result.c_str();
+     // else {result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v4.push_back(final);
+    }
+  if(inst==5){
+       s2=s2-16;
+        string so2 = to_string(s2);
+      result= "LDR  R"+ des1 +" [R"+ so1 +" #"+ so2 + "].";
+     //}//const char *final = result.c_str();
+     // else {result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v4.push_back(final);
+    }
+  if(inst==6){
+     if(s1<16){
+      
+      s1=s1-1;
+        string so1 = to_string(s1);
+      result= "CMP  R"+ des1 +" R"+ so1 + ".";
+     }//const char *final = result.c_str();
+      else {
+        s1=s1-16;
+        string so1 = to_string(s1);
+        result= "CMP R"+ des1 +" #"+ so1  + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v4.push_back(final);
+    }
+  if(inst==7){
+    if(s1<16){
+     s1=s1-1;
+        string so1 = to_string(s1);
+      result= "MOV  R"+ des1 +" R"+ so1 + ".";
+     }//const char *final = result.c_str();
+      else {
+         s1=s1-16;
+        string so1 = to_string(s1);
+        result= "MOV R"+ des1 +" #"+ so1  + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v4.push_back(final);
+    }if(inst==8){
+    int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BNE "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v4.push_back(final);
+    }
+  if(inst==9){
+  int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BGE "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v4.push_back(final);//v1.push_back("BGE");
+    }
+  if(inst==10){
+    int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BL "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v4.push_back(final);
+      //v1.push_back("BL");
+    }
+  if(inst==11){
+      int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "B "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v4.push_back(final);
+      //v1.push_back("B");
+    }
+  if(inst==12){
+      v4.push_back("LDR_pseudo");
+    }
+
+}
+
+
+
+for (int i = 0; i < st5.size(); i++)
+   {  int inst;
+   inst = (st5[i]-st5[i]%1000000)/1000000; 
+  // cout<<st5[i]<<endl;
+   int s2=(st5[i] % 100);
+
+   int s1=((st5[i]%10000-s2)/100);
+   
+   
+   int des=((st5[i]%1000000-(st5[i]%10000))/10000)-1;
+   string so1 = to_string(s1);
+   
+   string des1 = to_string(des);
+   // const char *dest = des1.c_str();
+   // const char *source1 = so1.c_str();
+   // const char *source2 = so2.c_str();
+   string result;
+   if(inst ==0){
+    v5.push_back("NOP");
+   }
+     if(inst==1){
+      //cout<<"ef";
+      if(s2<16){
+        s2=s2-1;
+        string so2 = to_string(s2);
+      result= "Add  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v5.push_back(final);
+    }
+  if(inst==2){
+    
+      if(s2<=16){
+          s2=s2-1;
+        string so2 = to_string(s2);
+      
+      result= "SUB  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "SUB R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v5.push_back(final);
+    }
+  if(inst==3){
+     
+      if(s2<16){
+          s2=s2-1;
+        string so2 = to_string(s2);
+      
+      result= "MUL  R"+ des1 +" R"+ so1 +" R"+ so2 + ".";
+     }//const char *final = result.c_str();
+      else {
+
+          s2=s2-16;
+        string so2 = to_string(s2);
+      
+        result= "MUL  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v5.push_back(final);
+    }
+  if(inst==4){
+       s2=s2-16;
+        string so2 = to_string(s2);
+      //if(s2<16){
+      result= "STR  R"+ des1 +" [R"+ so1 +" #"+ so2 + "].";
+     //}//const char *final = result.c_str();
+     // else {result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v5.push_back(final);
+    }
+  if(inst==5){
+       s2=s2-16;
+        string so2 = to_string(s2);
+      result= "LDR  R"+ des1 +" [R"+ so1 +" #"+ so2 + "].";
+     //}//const char *final = result.c_str();
+     // else {result= "Add  R"+ des1 +" R"+ so1 +" #"+ so2 + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v5.push_back(final);
+    }
+  if(inst==6){
+     if(s1<16){
+      
+      s1=s1-1;
+        string so1 = to_string(s1);
+      result= "CMP  R"+ des1 +" R"+ so1 + ".";
+     }//const char *final = result.c_str();
+      else {
+        s1=s1-16;
+        string so1 = to_string(s1);
+        result= "CMP R"+ des1 +" #"+ so1  + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v5.push_back(final);
+    }
+  if(inst==7){
+    if(s1<16){
+     s1=s1-1;
+        string so1 = to_string(s1);
+      result= "MOV  R"+ des1 +" R"+ so1 + ".";
+     }//const char *final = result.c_str();
+      else {
+         s1=s1-16;
+        string so1 = to_string(s1);
+        result= "MOV R"+ des1 +" #"+ so1  + ".";}
+      char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+
+      v5.push_back(final);
+    }
+ if(inst==8){
+    int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BNE "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v5.push_back(final);
+    }
+  if(inst==9){
+  int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BGE "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v5.push_back(final);//v1.push_back("BGE");
+    }
+  if(inst==10){
+    int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "BL "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v5.push_back(final);
+      //v1.push_back("BL");
+    }
+  if(inst==11){
+      int ff=0;
+    while(s2!=tup[ff].branch)
+    {
+      ff++;
+    } 
+    result= "B "+tup[ff].label;
+      //v1.push_back("BNE");
+    char * final = (char *)alloca(result.size() + 1);
+    memcpy(final, result.c_str(), result.size() + 1);
+      v5.push_back(final);
+      //v1.push_back("B");
+    }
+  if(inst==12){
+      v5.push_back("LDR_pseudo");
+    }
